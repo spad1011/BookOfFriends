@@ -15,9 +15,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mtu.sd3.bookoffriends.FormViewModel
+import com.mtu.sd3.bookoffriends.Screen
+import com.mtu.sd3.bookoffriends.entity.Friend
+import com.mtu.sd3.bookoffriends.utility.SQLViewmodel
 
 @Composable
-fun NewFriendFun(navController: NavController, viewModel: FormViewModel) {
+fun NewFriendFun(
+    navController: NavController,
+    viewModel: FormViewModel,
+    sqlViewModel: SQLViewmodel
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -85,7 +92,26 @@ fun NewFriendFun(navController: NavController, viewModel: FormViewModel) {
             )
         }
         Button(onClick = {
-
+            sqlViewModel.insertFriend(
+                friend = Friend(
+                    firstName = viewModel.firstName,
+                    lastName = viewModel.lastName,
+                    age = viewModel.age,
+                    height = viewModel.height,
+                    address = viewModel.address,
+                    phoneNumber = viewModel.phoneNumber,
+                    occupation = viewModel.occupation,
+                    hobbies = viewModel.hobbies,
+                    birthdate = viewModel.birthdate,
+                    birthplace = viewModel.birthplace,
+                    favFood = viewModel.favFood,
+                    favMovie = viewModel.favMovie,
+                    mostLoved = viewModel.mostLoved,
+                    mostHated = viewModel.mostHated,
+                    messageToOwner = viewModel.messageToOwner
+                )
+            )
+            navController.navigate(Screen.HomeScreen.route)
         }) { Text(text = "Submit") }
     }
 }

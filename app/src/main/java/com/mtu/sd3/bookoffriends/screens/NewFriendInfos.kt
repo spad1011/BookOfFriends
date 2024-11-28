@@ -1,4 +1,5 @@
 package com.mtu.sd3.bookoffriends.screens
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -91,7 +92,7 @@ fun NewFriendInfos(navController: NavController, viewModel: FormViewModel) {
                 modifier = Modifier.weight(1f),
                 value = if (viewModel.age == -1) "" else viewModel.age.toString(),
                 onValueChange = {
-                    viewModel.age = it.toIntOrNull() ?: -1 // Ensure valid integer input
+                    viewModel.age = it.toInt()
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 isError = !viewModel.isAgeValid
@@ -105,6 +106,16 @@ fun NewFriendInfos(navController: NavController, viewModel: FormViewModel) {
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
+        }
+
+        Row {
+            Text("Height: ", modifier = Modifier.width(100.dp))
+            OutlinedTextField(
+                modifier = Modifier.weight(1f),
+                value = if(viewModel.height == "n/a") "" else viewModel.height,
+                onValueChange = { if(it.toIntOrNull() != null) viewModel.height = it },
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+            )
         }
 
         // Address Input
