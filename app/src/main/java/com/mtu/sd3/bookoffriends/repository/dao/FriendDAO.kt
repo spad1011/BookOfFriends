@@ -20,10 +20,10 @@ interface FriendDAO {
         AND (:birthYear IS NULL OR birthdate LIKE :birthYear)
         """
     )
-    fun getAllLite(firstName: String?, lastName: String?, birthYear: String?): List<FriendLite>
+    suspend fun getAllLite(firstName: String?, lastName: String?, birthYear: String?): List<FriendLite>
 
     @Query("SELECT * FROM friend_table WHERE id = :id")
-    fun getFriendById(id: Int): Friend
+    suspend fun getFriendById(id: Int): Friend
 
 
 }

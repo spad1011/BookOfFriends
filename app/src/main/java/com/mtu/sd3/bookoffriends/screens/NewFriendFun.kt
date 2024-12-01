@@ -1,5 +1,6 @@
 package com.mtu.sd3.bookoffriends.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -91,26 +92,28 @@ fun NewFriendFun(
                 onValueChange = { viewModel.mostHated = it }
             )
         }
+        var friend = Friend(firstName = viewModel.firstName,
+            lastName = viewModel.lastName,
+            age = viewModel.age,
+            height = viewModel.height,
+            address = viewModel.address,
+            phoneNumber = viewModel.phoneNumber,
+            occupation = viewModel.occupation,
+            hobbies = viewModel.hobbies,
+            birthdate = viewModel.birthdate,
+            birthplace = viewModel.birthplace,
+            favFood = viewModel.favFood,
+            favMovie = viewModel.favMovie,
+            mostLoved = viewModel.mostLoved,
+            mostHated = viewModel.mostHated,
+            messageToOwner = viewModel.messageToOwner)
         Button(onClick = {
+            Log.d("NewFriendFun", "Friend: $friend")
+
             sqlViewModel.insertFriend(
-                friend = Friend(
-                    firstName = viewModel.firstName,
-                    lastName = viewModel.lastName,
-                    age = viewModel.age,
-                    height = viewModel.height,
-                    address = viewModel.address,
-                    phoneNumber = viewModel.phoneNumber,
-                    occupation = viewModel.occupation,
-                    hobbies = viewModel.hobbies,
-                    birthdate = viewModel.birthdate,
-                    birthplace = viewModel.birthplace,
-                    favFood = viewModel.favFood,
-                    favMovie = viewModel.favMovie,
-                    mostLoved = viewModel.mostLoved,
-                    mostHated = viewModel.mostHated,
-                    messageToOwner = viewModel.messageToOwner
+                friend
                 )
-            )
+
             navController.navigate(Screen.HomeScreen.route)
         }) { Text(text = "Submit") }
     }
