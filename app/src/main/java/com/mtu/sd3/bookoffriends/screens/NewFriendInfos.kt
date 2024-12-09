@@ -3,7 +3,6 @@ package com.mtu.sd3.bookoffriends.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -52,339 +51,335 @@ fun convertDate(millis: Long?): String {
 fun NewFriendInfos(navController: NavController, formViewModel: FormViewModel) {
     var showDatePicker by remember { mutableStateOf(false) }
 
-    Box(
-        Modifier
+
+    Column(
+        modifier = Modifier
             .fillMaxSize()
             .background(Color(0xff37474f))
+            .padding(16.dp),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.SpaceEvenly
+        // First Name Input
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .background(Color(0xff546e7a), shape = RoundedCornerShape(8.dp)),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            // First Name Input
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xff546e7a), shape = RoundedCornerShape(8.dp)),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    "First Name: ",
-                    modifier = Modifier.width(100.dp),
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
+            Text(
+                "First Name: ",
+                modifier = Modifier.width(100.dp),
+                color = Color.White,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp, top = 8.dp, bottom = 8.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.White.copy(alpha = 0.1F))
+                    .border(
+                        width = 2.dp,
+                        color = Color.White,
+                        shape = RoundedCornerShape(8.dp)
+                    ),
+                value = formViewModel.firstName,
+                onValueChange = { formViewModel.firstName = it },
+                isError = !formViewModel.isFirstNameValid,
+                textStyle = TextStyle(
+                    Color.White,
+                    fontSize = 16.sp
                 )
-                OutlinedTextField(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp, top = 8.dp, bottom = 8.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color.White.copy(alpha = 0.1F))
-                        .border(
-                            width = 2.dp,
-                            color = Color.White,
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    value = formViewModel.firstName,
-                    onValueChange = { formViewModel.firstName = it },
-                    isError = !formViewModel.isFirstNameValid,
-                    textStyle = TextStyle(
-                        Color.White,
-                        fontSize = 16.sp
-                    )
-                )
-            }
-            if (!formViewModel.isFirstNameValid) {
-                Text(
-                    text = "A valid name is required",
-                    color = Color.Red,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
+            )
+        }
+        if (!formViewModel.isFirstNameValid) {
+            Text(
+                text = "A valid name is required",
+                color = Color.Red,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
 
-            // Last Name Input
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xff546e7a), shape = RoundedCornerShape(8.dp)),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                OutlinedTextField(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color.White.copy(alpha = 0.1F))
-                        .border(
-                            width = 2.dp,
-                            color = Color.White,
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    value = formViewModel.lastName,
-                    onValueChange = { formViewModel.lastName = it },
-                    isError = !formViewModel.isLastNameValid,
-                    textStyle = TextStyle(
-                        Color.White,
-                        fontSize = 16.sp
-                    )
+        // Last Name Input
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .background(Color(0xff546e7a), shape = RoundedCornerShape(8.dp)),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedTextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.White.copy(alpha = 0.1F))
+                    .border(
+                        width = 2.dp,
+                        color = Color.White,
+                        shape = RoundedCornerShape(8.dp)
+                    ),
+                value = formViewModel.lastName,
+                onValueChange = { formViewModel.lastName = it },
+                isError = !formViewModel.isLastNameValid,
+                textStyle = TextStyle(
+                    Color.White,
+                    fontSize = 16.sp
                 )
-                Text(
-                    " :Last Name", modifier = Modifier.width(100.dp), color = Color.White,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
-                )
+            )
+            Text(
+                " :Last Name", modifier = Modifier.width(100.dp), color = Color.White,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
+            )
 
-            }
+        }
+        if (!formViewModel.isLastNameValid) {
+            Text(
+                text = "A valid lastname is required",
+                color = Color.Red,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
+        //Height Input
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .background(Color(0xff546e7a), shape = RoundedCornerShape(8.dp)),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                "Height (cm):", modifier = Modifier.width(100.dp), color = Color.White,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp, top = 8.dp, bottom = 8.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.White.copy(alpha = 0.1F))
+                    .border(
+                        width = 2.dp,
+                        color = Color.White,
+                        shape = RoundedCornerShape(8.dp)
+                    ),
+                value = if (formViewModel.height == "n/a") "" else formViewModel.height,
+                onValueChange = { if (it.toIntOrNull() != null) formViewModel.height = it },
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                textStyle = TextStyle(
+                    Color.White,
+                    fontSize = 16.sp
+                )
+            )
+        }
+
+        // Address Input
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .background(Color(0xff546e7a), shape = RoundedCornerShape(8.dp)),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedTextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.White.copy(alpha = 0.1F))
+                    .border(
+                        width = 2.dp,
+                        color = Color.White,
+                        shape = RoundedCornerShape(8.dp)
+                    ),
+                value = formViewModel.address,
+                onValueChange = { formViewModel.address = it },
+                isError = !formViewModel.isAddressValid,
+                textStyle = TextStyle(
+                    Color.White,
+                    fontSize = 16.sp
+                )
+            )
+            Text(
+                " :Address", modifier = Modifier.width(100.dp), color = Color.White,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
+            )
+
+        }
+        if (!formViewModel.isAddressValid) {
             if (!formViewModel.isLastNameValid) {
                 Text(
-                    text = "A valid lastname is required",
+                    text = "A valid Address is required",
                     color = Color.Red,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
+        }
 
-            //Height Input
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xff546e7a), shape = RoundedCornerShape(8.dp)),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+        // Phone Number Input
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .background(Color(0xff546e7a), shape = RoundedCornerShape(8.dp)),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                "Phone Number: ", modifier = Modifier.width(100.dp), color = Color.White,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp, top = 8.dp, bottom = 8.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.White.copy(alpha = 0.1F))
+                    .border(
+                        width = 2.dp,
+                        color = Color.White,
+                        shape = RoundedCornerShape(8.dp)
+                    ),
+                value = formViewModel.phoneNumber,
+                onValueChange = { formViewModel.phoneNumber = it },
+                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Phone),
+                isError = !formViewModel.isPhoneNumberValid,
+                textStyle = TextStyle(
+                    Color.White,
+                    fontSize = 16.sp
+                )
+            )
+        }
+        if (!formViewModel.isPhoneNumberValid) {
+            if (!formViewModel.isLastNameValid) {
                 Text(
-                    "Height (cm):", modifier = Modifier.width(100.dp), color = Color.White,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
-                )
-                OutlinedTextField(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp, top = 8.dp, bottom = 8.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color.White.copy(alpha = 0.1F))
-                        .border(
-                            width = 2.dp,
-                            color = Color.White,
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    value = if (formViewModel.height == "n/a") "" else formViewModel.height,
-                    onValueChange = { if (it.toIntOrNull() != null) formViewModel.height = it },
-                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                    textStyle = TextStyle(
-                        Color.White,
-                        fontSize = 16.sp
-                    )
-                )
-            }
-
-            // Address Input
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xff546e7a), shape = RoundedCornerShape(8.dp)),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                OutlinedTextField(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color.White.copy(alpha = 0.1F))
-                        .border(
-                            width = 2.dp,
-                            color = Color.White,
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    value = formViewModel.address,
-                    onValueChange = { formViewModel.address = it },
-                    isError = !formViewModel.isAddressValid,
-                    textStyle = TextStyle(
-                        Color.White,
-                        fontSize = 16.sp
-                    )
-                )
-                Text(
-                    " :Address", modifier = Modifier.width(100.dp), color = Color.White,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
-                )
-
-            }
-            if (!formViewModel.isAddressValid) {
-                if (!formViewModel.isLastNameValid) {
-                    Text(
-                        text = "A valid Address is required",
-                        color = Color.Red,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
-
-            // Phone Number Input
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xff546e7a), shape = RoundedCornerShape(8.dp)),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    "Phone Number: ", modifier = Modifier.width(100.dp), color = Color.White,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
-                )
-                OutlinedTextField(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp, top = 8.dp, bottom = 8.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color.White.copy(alpha = 0.1F))
-                        .border(
-                            width = 2.dp,
-                            color = Color.White,
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    value = formViewModel.phoneNumber,
-                    onValueChange = { formViewModel.phoneNumber = it },
-                    keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Phone),
-                    isError = !formViewModel.isPhoneNumberValid,
-                    textStyle = TextStyle(
-                        Color.White,
-                        fontSize = 16.sp
-                    )
-                )
-            }
-            if (!formViewModel.isPhoneNumberValid) {
-                if (!formViewModel.isLastNameValid) {
-                    Text(
-                        text = "A valid Number is required",
-                        color = Color.Red,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
-            // Birth Date Input with Date Picker
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xff546e7a), shape = RoundedCornerShape(8.dp)),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                OutlinedTextField(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color.White.copy(alpha = 0.1F))
-                        .border(
-                            width = 2.dp,
-                            color = Color.White,
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    value = formViewModel.birthdate,
-                    onValueChange = {},
-                    readOnly = true,
-                    trailingIcon = {
-                        IconButton(onClick = { showDatePicker = !showDatePicker }) {
-                            Icon(
-                                imageVector = Icons.Default.DateRange,
-                                contentDescription = "Select date of birth"
-                            )
-                        }
-                    },
-                    isError = !formViewModel.isBirthdateValid,
-                    textStyle = TextStyle(
-                        Color.White,
-                        fontSize = 16.sp
-                    )
-                )
-                Text(
-                    " :Birthdate", modifier = Modifier.width(100.dp), color = Color.White,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
-                )
-            }
-            if (showDatePicker) {
-                DatePickerModal(
-                    onDateSelected = { date ->
-                        formViewModel.birthdate = convertDate(date)
-                        showDatePicker = false
-                    },
-                    onDismiss = { showDatePicker = false })
-            }
-            if (!formViewModel.isBirthdateValid) {
-                Text(
-                    text = "Pick a date",
+                    text = "A valid Number is required",
                     color = Color.Red,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
+        }
+        // Birth Date Input with Date Picker
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .background(Color(0xff546e7a), shape = RoundedCornerShape(8.dp)),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedTextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.White.copy(alpha = 0.1F))
+                    .border(
+                        width = 2.dp,
+                        color = Color.White,
+                        shape = RoundedCornerShape(8.dp)
+                    ),
+                value = formViewModel.birthdate,
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = { showDatePicker = !showDatePicker }) {
+                        Icon(
+                            imageVector = Icons.Default.DateRange,
+                            contentDescription = "Select date of birth"
+                        )
+                    }
+                },
+                isError = !formViewModel.isBirthdateValid,
+                textStyle = TextStyle(
+                    Color.White,
+                    fontSize = 16.sp
+                )
+            )
+            Text(
+                " :Birthdate", modifier = Modifier.width(100.dp), color = Color.White,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
+            )
+        }
+        if (showDatePicker) {
+            DatePickerModal(
+                onDateSelected = { date ->
+                    formViewModel.birthdate = convertDate(date)
+                    showDatePicker = false
+                },
+                onDismiss = { showDatePicker = false })
+        }
+        if (!formViewModel.isBirthdateValid) {
+            Text(
+                text = "Pick a date",
+                color = Color.Red,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
 
-            // Occupation Input
-            Row(
+        // Occupation Input
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .background(Color(0xff546e7a), shape = RoundedCornerShape(8.dp)),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                "Occu-\npation: ", modifier = Modifier.width(100.dp), color = Color.White,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
+            )
+            OutlinedTextField(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = 8.dp, top = 8.dp, bottom = 8.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.White.copy(alpha = 0.1F))
+                    .border(
+                        width = 2.dp,
+                        color = Color.White,
+                        shape = RoundedCornerShape(8.dp)
+                    ),
+                value = formViewModel.occupation,
+                onValueChange = { formViewModel.occupation = it },
+                textStyle = TextStyle(
+                    Color.White,
+                    fontSize = 16.sp
+                )
+            )
+        }
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Start,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Button(
+                onClick = {
+                    formViewModel.resetForm()
+                    navController.navigate(Screen.HomeScreen.route)
+                },
+                modifier = Modifier
+                    .height(60.dp)
+                    .width(115.dp)
+                    .padding(end = 40.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
+            Button(
+                onClick = {
+                    if (formViewModel.validateInputs()) {
+                        navController.navigate(Screen.NewFriendFun.route)
+                    }
+                },
                 Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xff546e7a), shape = RoundedCornerShape(8.dp)),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    "Occu-\npation: ", modifier = Modifier.width(100.dp), color = Color.White,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
-                )
-                OutlinedTextField(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp, top = 8.dp, bottom = 8.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(Color.White.copy(alpha = 0.1F))
-                        .border(
-                            width = 2.dp,
-                            color = Color.White,
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    value = formViewModel.occupation,
-                    onValueChange = { formViewModel.occupation = it },
-                    textStyle = TextStyle(
-                        Color.White,
-                        fontSize = 16.sp
-                    )
-                )
-            }
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Button(
-                    onClick = {
-                        formViewModel.resetForm()
-                        navController.navigate(Screen.HomeScreen.route)
-                    },
-                    modifier = Modifier
-                        .height(60.dp)
-                        .width(115.dp)
-                        .padding(end = 40.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Back"
-                    )
-                }
-                Button(
-                    onClick = {
-                        if (formViewModel.validateInputs()) {
-                            navController.navigate(Screen.NewFriendFun.route)
-                        }
-                    },
-                    Modifier
-                        .height(60.dp)
-                        .fillMaxWidth(0.9f)
-                ) { Text(text = "Fun things", fontSize = 20.sp) }
-            }
+                    .height(60.dp)
+                    .fillMaxWidth(0.9f)
+            ) { Text(text = "Fun things", fontSize = 20.sp) }
         }
     }
 }

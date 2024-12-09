@@ -22,7 +22,7 @@ class FormViewModel : ViewModel() {
     var mostLoved by mutableStateOf("")
     var mostHated by mutableStateOf("")
 
-    var messageToOwner = ""
+    var messageToOwner by mutableStateOf("")
 
     var isFirstNameValid by mutableStateOf(true)
     var isLastNameValid by mutableStateOf(true)
