@@ -85,7 +85,7 @@ fun MainFunction() {
         }) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.FindFriend.route,
+            startDestination = Screen.NewFriendFun.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.HomeScreen.route) { HomeScreen(navController) }
@@ -98,7 +98,7 @@ fun MainFunction() {
             ) { backStackEntry ->
                 val id = backStackEntry.arguments?.getInt("id")
                 if (id != null)
-                    FriendDetails(sqlViewmodel, id)
+                    FriendDetails(sqlViewmodel, id, navController)
             }
         }
     }

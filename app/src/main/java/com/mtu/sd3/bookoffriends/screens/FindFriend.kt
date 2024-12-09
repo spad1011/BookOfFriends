@@ -45,6 +45,8 @@ fun FindFriend(navController: NavController, sqlViewModel: SQLViewModel) {
     var lastName by remember { mutableStateOf("") }
     var birthYear by remember { mutableStateOf("") }
     var friends = sqlViewModel.friends.collectAsState().value
+    //var updateListAfterDeletion = sqlViewModel.deleteResult.collectAsState().value
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -143,6 +145,7 @@ fun FindFriend(navController: NavController, sqlViewModel: SQLViewModel) {
                             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
                         )
                     }
+
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                         Button(onClick = {
                             Log.d(
@@ -177,7 +180,7 @@ fun FindFriend(navController: NavController, sqlViewModel: SQLViewModel) {
             )
             else {
                 Log.d("FindFriend: entered else block:", "friends: $friends")
-                FriendCardList(friends, navController)
+                FriendCardList(friends, navController, sqlViewModel, firstName, lastName, birthYear)
             }
         }
     }

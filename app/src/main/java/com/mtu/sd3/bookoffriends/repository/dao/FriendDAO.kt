@@ -25,5 +25,9 @@ interface FriendDAO {
     @Query("SELECT * FROM friend_table WHERE id = :id")
     suspend fun getFriendById(id: Int): Friend
 
+    @Query("DELETE FROM friend_table WHERE id = :id")
+    suspend fun deleteFriendById(id: Int): Int
+
+
 
 }

@@ -32,14 +32,14 @@ class FormViewModel : ViewModel() {
     @Suppress("RegExpRedundantEscape", "unused")
     private val PHONE_NUMBER_REGEX =
         Regex("^[+]?[(]?[0-9]{3}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4,6}$")
-    private val PHONE_NUMBER_REGEX_TESTING = Regex("^\\d{4}\$")
+    //private val PHONE_NUMBER_REGEX_TESTING = Regex("^\\d{4}\$")
 
     fun validateInputs(): Boolean {
         isFirstNameValid = firstName.length >= 3 && firstName.isNotBlank()
         isLastNameValid = firstName.length >= 3 && firstName.isNotBlank()
         isAddressValid = address.isNotBlank()
         isPhoneNumberValid =
-            PHONE_NUMBER_REGEX_TESTING.matches(phoneNumber) //TODO remove testing regex eventually
+            PHONE_NUMBER_REGEX.matches(phoneNumber)
         isBirthdateValid = birthdate.isNotBlank()
         val returnCheck = listOf(
             isFirstNameValid,

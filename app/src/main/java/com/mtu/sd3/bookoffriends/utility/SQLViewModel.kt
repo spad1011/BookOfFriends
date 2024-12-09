@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class SQLViewModel(application: Application) : AndroidViewModel(application) {
+
     private val friendDao = FriendDatabase.getDatabase(application).friendDao()
 
     private val _friends = MutableStateFlow<List<FriendLite>>(emptyList())
@@ -22,6 +23,10 @@ class SQLViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _insertionResult = MutableStateFlow<InsertState>(InsertState.Idle)
     val insertionResult = _insertionResult.asStateFlow()
+
+    private val _deleteResult = MutableStateFlow<Boolean>(false)
+    //val deleteResult = _deleteResult.asStateFlow()
+
 
     fun getAllLite(
         firstName: String?,
@@ -58,6 +63,14 @@ class SQLViewModel(application: Application) : AndroidViewModel(application) {
             } catch (e: Exception) {
                 _insertionResult.value = InsertState.Failure("Error inserting friend: ${e.message ?: "Unknown error"}")
             }
+        }
+    }
+
+    fun deleteFriendById(id: Int) {
+        Log.d("SQLViewModel", "Deleting friend with id: $id")
+        viewModelScope.launch {
+            val deletedRows = friendDao.deleteFriendById(id)
+            _deleteResult.value = deletedRows > 0
         }
     }
 

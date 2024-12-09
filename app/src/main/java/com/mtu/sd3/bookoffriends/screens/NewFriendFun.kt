@@ -306,13 +306,45 @@ fun NewFriendFun(
                     textAlign = TextAlign.Center
                 )
             }
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text("Message to owner: ", modifier = Modifier.width(100.dp))
-                OutlinedTextField(
-                    modifier = Modifier.weight(1f),
-                    value = formViewModel.messageToOwner,
-                    onValueChange = { formViewModel.messageToOwner = it }
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .height(65.dp)
+                    .background(
+                        brush = Brush.linearGradient(
+                            colors = listOf(
+                                Color(0xff795548),
+                                Color(0xff3e2723)
+                            ), start = Offset(0.2F, 0F), end = Offset(Float.POSITIVE_INFINITY, 0F)
+                        ), shape = RoundedCornerShape(8.dp)
+                    ),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    "Message to Owner: ",
+                    modifier = Modifier.width(100.dp),
+                    color = Color.White,
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center
                 )
+                OutlinedTextField(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(Color.White.copy(alpha = 0.1F))
+                        .border(
+                            width = 2.dp,
+                            color = Color.White,
+                            shape = RoundedCornerShape(8.dp)
+                        ),
+                    value = formViewModel.messageToOwner,
+                    onValueChange = { formViewModel.messageToOwner = it }, textStyle = TextStyle(
+                        Color.White,
+                        fontSize = 16.sp
+                    )
+                )
+
             }
             var friend = Friend(
                 firstName = formViewModel.firstName,
