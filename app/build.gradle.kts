@@ -50,12 +50,22 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
-    implementation("androidx.room:room-runtime:2.6.1")
-    ksp("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
+
+    implementation ("androidx.camera:camera-core:1.5.0")
+    implementation ("androidx.camera:camera-lifecycle:1.5.0")
+    implementation ("androidx.camera:camera-view:1.5.0")
+    implementation ("androidx.camera:camera-extensions:1.5.0")
+
+
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.kotlinx.serialization.json)
