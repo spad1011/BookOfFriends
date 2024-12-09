@@ -50,7 +50,7 @@ fun NewFriendFun(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.DarkGray)
+            .background(Color(0xff37474f))
     ) {
         Column(
             modifier = Modifier
@@ -359,7 +359,7 @@ fun NewFriendFun(
                     }, modifier = Modifier
                         .height(60.dp)
                         .fillMaxWidth(0.9F)
-                ) { Text(text = "Submit", fontSize = 17.sp) }
+                ) { Text(text = "Submit", fontSize = 20.sp) }
             }
 
         }

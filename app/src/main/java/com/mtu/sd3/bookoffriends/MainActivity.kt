@@ -85,7 +85,7 @@ fun MainFunction() {
         }) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.NewFriendFun.route,
+            startDestination = Screen.FindFriend.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.HomeScreen.route) { HomeScreen(navController) }

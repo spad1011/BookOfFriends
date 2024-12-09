@@ -17,7 +17,7 @@ interface FriendDAO {
         FROM friend_table
         WHERE(:firstName IS NULL OR firstName LIKE :firstName)
         AND (:lastName IS NULL OR lastName LIKE :lastName)
-        AND (:birthYear IS NULL OR birthdate LIKE :birthYear)
+        AND (:birthYear IS NULL OR SUBSTRING(birthdate,-4) LIKE :birthYear)
         """
     )
     suspend fun getAllLite(firstName: String?, lastName: String?, birthYear: String?): List<FriendLite>

@@ -16,8 +16,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.AbsoluteAlignment
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.mtu.sd3.bookoffriends.Screen
 import com.mtu.sd3.bookoffriends.entity.FriendLite
@@ -45,11 +50,11 @@ fun FriendCard(friend: FriendLite, navController: NavController) {
         Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = if (isBirthday) {
-                androidx.compose.ui.graphics.Color.Green
+                Color(0xff388e3c)
             } else {
-                androidx.compose.ui.graphics.Color.DarkGray
+                Color(0xfffff3e0)
             },
-            contentColor = androidx.compose.ui.graphics.Color.White
+            contentColor = Color.White
 
         )
     ) {
@@ -66,15 +71,23 @@ fun FriendCard(friend: FriendLite, navController: NavController) {
                 ) {
                     Text("IMAGE PLACEHOLDER")
                 }
-                Column(Modifier.fillMaxSize()) {
-                    Text(text = "Name: ${friend.firstName} ${friend.lastName}")
-                    Text(text = "Age: $age")
-                    Text(text = "potential extra field")
+                Column(
+                    Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = AbsoluteAlignment.Left
+                ) {
+                    Text(text = "Name: ${friend.firstName} ${friend.lastName}",color =  Color.Black, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    Text(text = "Age: ${if (age == -1) "unknown" else age}", color =  Color.Black, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    Text(text = "potential extra field",color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 20.sp)
                 }
             }
-            Row(Modifier.fillMaxWidth()) {
-                Text(text = "Address: ${friend.address}")
-                Text(text = "Phone: ${friend.phoneNumber}")
+            Row(
+                Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                Text(text = "Address: ${friend.address}", color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                Text(text = "Phone: ${friend.phoneNumber}", color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 20.sp)
             }
 
         }
@@ -83,15 +96,20 @@ fun FriendCard(friend: FriendLite, navController: NavController) {
 
 fun determineAge(birthDate: String): Int {
     val currentYear = java.time.Year.now().value
-    val birthYear = birthDate.substringAfterLast("/").toInt()
+    val birthYear = birthDate.substringAfterLast("/").toIntOrNull() ?: return -1
     return currentYear - birthYear
 }
 
 fun determineBirthday(birthDate: String): Boolean {
     val currentMonth = java.time.LocalDate.now().monthValue
     val currentDay = java.time.LocalDate.now().dayOfMonth
-    val birthDay = birthDate.substringBefore("/").toInt()
-    val birthMonth = birthDate.substringAfter("/").substringBefore("/").toInt()
+    val birthDay = birthDate
+        .substringBefore("/")
+        .toIntOrNull() ?: return false
+    val birthMonth = birthDate
+        .substringAfter("/")
+        .substringBefore("/")
+        .toIntOrNull() ?: return false
     return (currentMonth == birthMonth && currentDay == birthDay)
 
 }

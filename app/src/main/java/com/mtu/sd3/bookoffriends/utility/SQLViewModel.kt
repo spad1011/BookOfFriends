@@ -28,8 +28,12 @@ class SQLViewModel(application: Application) : AndroidViewModel(application) {
         lastName: String?,
         birthYear: String?
     ) {
-        Log.d("SQLViewModel", "Getting all lite friends")
+        Log.d("SQLViewModel", "Getting all lite friends, inputs: $firstName, $lastName, $birthYear")
+        val test = "%$firstName%"
+        val test2 = "%$birthYear%"
+        Log.d("SQLViewModel", "test: $test, test2: $test2")
         viewModelScope.launch {
+
             _friends.value = friendDao.getAllLite(firstName, lastName, birthYear)
         }
     }

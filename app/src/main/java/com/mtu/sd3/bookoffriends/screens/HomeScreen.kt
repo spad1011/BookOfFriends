@@ -10,11 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -46,12 +49,17 @@ fun inputCheck(input: String): InputHandler {
 fun HomeScreen(navController: NavController) {
     var passwordInput by remember { mutableStateOf("") }
     var inputHandler by remember { mutableStateOf(InputHandler("", false)) }
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xffb0bec5))
+    )
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(64.dp))
         Text(
             text = "MY BOOK\nOF FRIENDS",
             style = MaterialTheme.typography.titleLarge,
@@ -62,58 +70,62 @@ fun HomeScreen(navController: NavController) {
             textAlign = TextAlign.Center,
             lineHeight = 60.sp,
         )
-        Spacer(Modifier.height(200.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = Color.Transparent, shape = CutCornerShape(4.dp))
-                .border(
-                    width = 1.dp,
-                    color = Color.Black,
-                    shape = CutCornerShape(4.dp)
-                )
-                .padding(horizontal = 16.dp), contentAlignment = Alignment.TopStart
+        Spacer(Modifier.height(100.dp))
+        HorizontalDivider(modifier = Modifier.fillMaxWidth(), color = Color.Black, thickness = 3.dp)
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 64.dp)
-                        .padding(bottom = 16.dp, top = 32.dp),
-                    value = passwordInput,
-                    onValueChange = { passwordInput = it },
-                    label = { Text("Input") },
-                    isError = inputHandler.isError
-                )
-                if (inputHandler.isError) {
-                    Text(
-                        text = inputHandler.message,
-                        color = Color.Red,
-                        style = MaterialTheme.typography.bodyMedium,
-
-                        )
-                }
-
-                Button(modifier = Modifier
+            TextField(
+                modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 64.dp), onClick = {
-                    inputHandler = inputCheck(passwordInput)
-                    if (!inputHandler.isError)
-                        navController.navigate(Screen.FindFriend.route)
-                }) { Text("Submit magic word") }
-                Spacer(modifier = Modifier.height(32.dp))
+                    .height(120.dp)
+                    .padding(end = 32.dp, start = 32.dp, bottom = 32.dp, top = 32.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(Color.White.copy(alpha = 0.3F))
+                    .border(
+                        width = 2.dp,
+                        color = Color.White,
+                        shape = RoundedCornerShape(8.dp)
+                    ),
+                value = passwordInput,
+                onValueChange = { passwordInput = it },
+                label = { Text("Magic word") },
+                isError = inputHandler.isError,
+                textStyle = TextStyle(
+                    fontSize = 22.sp
+                )
+            )
+            if (inputHandler.isError) {
+                Text(
+                    text = inputHandler.message,
+                    color = Color.Red,
+                    style = MaterialTheme.typography.bodyMedium,
+
+                    )
             }
+
+            Button(modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .padding(horizontal = 64.dp), onClick = {
+                inputHandler = inputCheck(passwordInput)
+                if (!inputHandler.isError)
+                    navController.navigate(Screen.FindFriend.route)
+            }) { Text("Submit magic word") }
+            Spacer(modifier = Modifier.height(32.dp))
         }
+        HorizontalDivider(modifier = Modifier.fillMaxWidth(), color = Color.Black, thickness = 3.dp)
+
         Text("or", Modifier.padding(top = 16.dp), style = MaterialTheme.typography.titleMedium)
         Spacer(Modifier.height(150.dp))
         Button(modifier = Modifier
             .fillMaxWidth()
+            .height(60.dp)
             .padding(horizontal = 48.dp)
-            .height(60.dp),
+            .padding(bottom = 5.dp)
+            .align(Alignment.End),
             onClick = { navController.navigate(Screen.NewFriendInfos.route) }) {
             Text(
                 "Make a new friend",
