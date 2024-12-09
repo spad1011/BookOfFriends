@@ -12,10 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-import com.mtu.sd3.bookoffriends.utility.SQLViewmodel
+import com.mtu.sd3.bookoffriends.utility.SQLViewModel
 
 @Composable
-fun FriendDetails(sqlViewmodel: SQLViewmodel, id: Int) {
+fun FriendDetails(sqlViewmodel: SQLViewModel, id: Int) {
     sqlViewmodel.getFriendById(id)
     val friend = sqlViewmodel.friend.collectAsState().value
     println(friend)

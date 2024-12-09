@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
@@ -27,9 +28,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.mtu.sd3.bookoffriends.FormViewModel
 import com.mtu.sd3.bookoffriends.Screen
 import com.mtu.sd3.bookoffriends.utility.DatePickerModal
+import com.mtu.sd3.bookoffriends.utility.FormViewModel
 import com.mtu.sd3.bookoffriends.utility.convertMillisToDate
 
 fun convertDate(millis: Long?): String {
@@ -47,10 +48,10 @@ fun NewFriendInfos(navController: NavController, viewModel: FormViewModel) {
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(16.dp) // Space between rows
+        verticalArrangement = Arrangement.SpaceEvenly
     ) {
         // First Name Input
-        Row {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text("First Name: ", modifier = Modifier.width(100.dp))
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
@@ -68,14 +69,15 @@ fun NewFriendInfos(navController: NavController, viewModel: FormViewModel) {
         }
 
         // Last Name Input
-        Row {
-            Text("Last Name: ", modifier = Modifier.width(100.dp))
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
                 value = viewModel.lastName,
                 onValueChange = { viewModel.lastName = it },
                 isError = !viewModel.isLastNameValid
             )
+            Text(" :Last Name", modifier = Modifier.width(100.dp))
+
         }
         if (!viewModel.isLastNameValid) {
             Text(
@@ -85,48 +87,27 @@ fun NewFriendInfos(navController: NavController, viewModel: FormViewModel) {
             )
         }
 
-        // Age Input
-        Row {
-            Text("Age: ", modifier = Modifier.width(100.dp))
+        //Height Input
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Text("Height (cm):", modifier = Modifier.width(100.dp))
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
-                value = if (viewModel.age == -1) "" else viewModel.age.toString(),
-                onValueChange = {
-                    viewModel.age = it.toInt()
-                },
-                keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                isError = !viewModel.isAgeValid
-            )
-        }
-        if (!viewModel.isAgeValid) {
-            if (!viewModel.isLastNameValid) {
-                Text(
-                    text = "A valid Age is required",
-                    color = Color.Red,
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-        }
-
-        Row {
-            Text("Height: ", modifier = Modifier.width(100.dp))
-            OutlinedTextField(
-                modifier = Modifier.weight(1f),
-                value = if(viewModel.height == "n/a") "" else viewModel.height,
-                onValueChange = { if(it.toIntOrNull() != null) viewModel.height = it },
+                value = if (viewModel.height == "n/a") "" else viewModel.height,
+                onValueChange = { if (it.toIntOrNull() != null) viewModel.height = it },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             )
         }
 
         // Address Input
-        Row {
-            Text("Address: ", modifier = Modifier.width(100.dp))
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
                 value = viewModel.address,
                 onValueChange = { viewModel.address = it },
                 isError = !viewModel.isAddressValid
             )
+            Text(" :Address", modifier = Modifier.width(100.dp))
+
         }
         if (!viewModel.isAddressValid) {
             if (!viewModel.isLastNameValid) {
@@ -139,7 +120,7 @@ fun NewFriendInfos(navController: NavController, viewModel: FormViewModel) {
         }
 
         // Phone Number Input
-        Row {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text("Phone Number: ", modifier = Modifier.width(100.dp))
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
@@ -159,23 +140,24 @@ fun NewFriendInfos(navController: NavController, viewModel: FormViewModel) {
             }
         }
         // Birth Date Input with Date Picker
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth(),
-            value = viewModel.birthdate,
-            onValueChange = {},
-            label = { Text("DOB") },
-            readOnly = true,
-            trailingIcon = {
-                IconButton(onClick = { showDatePicker = !showDatePicker }) {
-                    Icon(
-                        imageVector = Icons.Default.DateRange,
-                        contentDescription = "Select date of birth"
-                    )
-                }
-            },
-            isError = !viewModel.isBirthdateValid
-        )
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            OutlinedTextField(
+                modifier = Modifier.weight(1f),
+                value = viewModel.birthdate,
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = { showDatePicker = !showDatePicker }) {
+                        Icon(
+                            imageVector = Icons.Default.DateRange,
+                            contentDescription = "Select date of birth"
+                        )
+                    }
+                },
+                isError = !viewModel.isBirthdateValid
+            )
+            Text(" :Birthdate", modifier = Modifier.width(100.dp))
+        }
         if (showDatePicker) {
             DatePickerModal(
                 onDateSelected = { date ->
@@ -193,7 +175,7 @@ fun NewFriendInfos(navController: NavController, viewModel: FormViewModel) {
         }
 
         // Occupation Input
-        Row {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text("Occupation: ", modifier = Modifier.width(100.dp))
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
@@ -202,12 +184,20 @@ fun NewFriendInfos(navController: NavController, viewModel: FormViewModel) {
             )
         }
 
-
-        // Submit Button
-        Button(onClick = {
-            if (viewModel.validateInputs()) {
-                navController.navigate(Screen.NewFriendFun.route)
-            }
-        }) { Text(text = "Fun things") }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            // Submit Button
+            Button(onClick = {
+                if (viewModel.validateInputs()) {
+                    navController.navigate(Screen.NewFriendFun.route)
+                }
+            },
+                Modifier
+                    .height(60.dp)
+                    .fillMaxWidth(0.75f)) { Text(text = "Fun things") }
+        }
     }
 }

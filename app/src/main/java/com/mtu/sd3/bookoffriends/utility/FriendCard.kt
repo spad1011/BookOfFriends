@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mtu.sd3.bookoffriends.Screen
 import com.mtu.sd3.bookoffriends.entity.FriendLite
-import com.mtu.sd3.bookoffriends.screens.FriendDetails
 
 @Composable
 fun FriendCardList(friends: List<FriendLite>, navController: NavController) {
@@ -36,10 +36,23 @@ fun FriendCardList(friends: List<FriendLite>, navController: NavController) {
 }
 
 
-
 @Composable
 fun FriendCard(friend: FriendLite, navController: NavController) {
-    Card(onClick = { navController.navigate(Screen.FriendDetails.createRoute(friend.id)) },Modifier.fillMaxWidth()) {
+    val age = determineAge(friend.birthdate)
+    val isBirthday = determineBirthday(friend.birthdate)
+    Card(
+        onClick = { navController.navigate(Screen.FriendDetails.createRoute(friend.id)) },
+        Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isBirthday) {
+                androidx.compose.ui.graphics.Color.Green
+            } else {
+                androidx.compose.ui.graphics.Color.DarkGray
+            },
+            contentColor = androidx.compose.ui.graphics.Color.White
+
+        )
+    ) {
         Column(Modifier.fillMaxSize()) {
             Row(
                 Modifier
@@ -55,7 +68,7 @@ fun FriendCard(friend: FriendLite, navController: NavController) {
                 }
                 Column(Modifier.fillMaxSize()) {
                     Text(text = "Name: ${friend.firstName} ${friend.lastName}")
-                    Text(text = "Age: ${friend.age}")
+                    Text(text = "Age: $age")
                     Text(text = "potential extra field")
                 }
             }
@@ -66,4 +79,19 @@ fun FriendCard(friend: FriendLite, navController: NavController) {
 
         }
     }
+}
+
+fun determineAge(birthDate: String): Int {
+    val currentYear = java.time.Year.now().value
+    val birthYear = birthDate.substringAfterLast("/").toInt()
+    return currentYear - birthYear
+}
+
+fun determineBirthday(birthDate: String): Boolean {
+    val currentMonth = java.time.LocalDate.now().monthValue
+    val currentDay = java.time.LocalDate.now().dayOfMonth
+    val birthDay = birthDate.substringBefore("/").toInt()
+    val birthMonth = birthDate.substringAfter("/").substringBefore("/").toInt()
+    return (currentMonth == birthMonth && currentDay == birthDay)
+
 }

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SQLViewmodel(application: Application) : AndroidViewModel(application) {
+class SQLViewModel(application: Application) : AndroidViewModel(application) {
     private val friendDao = FriendDatabase.getDatabase(application).friendDao()
 
     private val _friends = MutableStateFlow<List<FriendLite>>(emptyList())
@@ -19,6 +19,9 @@ class SQLViewmodel(application: Application) : AndroidViewModel(application) {
 
     private val _friend = MutableStateFlow<Friend?>(null)
     val friend = _friend.asStateFlow()
+
+    private val _insertionResult = MutableStateFlow<InsertState>(InsertState.Idle)
+    val insertionResult = _insertionResult.asStateFlow()
 
     fun getAllLite(
         firstName: String?,
@@ -40,9 +43,31 @@ class SQLViewmodel(application: Application) : AndroidViewModel(application) {
     fun insertFriend(friend: Friend) {
         Log.d("SQLViewModel", "Inserting friend: $friend")
         viewModelScope.launch {
-            friendDao.insert(friend)
+            try {
+                _insertionResult.value = InsertState.Loading
+                val result = friendDao.insert(friend)
+                if (result > 0 ) {
+                    _insertionResult.value = InsertState.Success
+                } else {
+                    _insertionResult.value = InsertState.Failure("Failed to insert friend. Room returned invalid ID")
+                }
+            } catch (e: Exception) {
+                _insertionResult.value = InsertState.Failure("Error inserting friend: ${e.message ?: "Unknown error"}")
+            }
         }
     }
 
+    fun resetInsertState() {
+        _insertionResult.value = InsertState.Idle
+    }
+
+}
+
+
+sealed class InsertState {
+    object Idle : InsertState()
+    object Success : InsertState()
+    object Loading : InsertState()
+    data class Failure(val errorMessage: String) : InsertState()
 }
 

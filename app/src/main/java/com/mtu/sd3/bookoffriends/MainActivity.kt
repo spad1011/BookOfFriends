@@ -13,11 +13,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -30,7 +28,8 @@ import com.mtu.sd3.bookoffriends.screens.HomeScreen
 import com.mtu.sd3.bookoffriends.screens.NewFriendFun
 import com.mtu.sd3.bookoffriends.screens.NewFriendInfos
 import com.mtu.sd3.bookoffriends.ui.theme.BookOfFriendsTheme
-import com.mtu.sd3.bookoffriends.utility.SQLViewmodel
+import com.mtu.sd3.bookoffriends.utility.FormViewModel
+import com.mtu.sd3.bookoffriends.utility.SQLViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +73,7 @@ fun MainFunction() {
 
     )
     val viewModel: FormViewModel = viewModel()
-    val sqlViewmodel: SQLViewmodel = viewModel()
+    val sqlViewmodel: SQLViewModel = viewModel()
 
     var selectedIndex by remember { mutableIntStateOf(0) }
 
@@ -86,7 +85,7 @@ fun MainFunction() {
         }) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.HomeScreen.route,
+            startDestination = Screen.NewFriendFun.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.HomeScreen.route) { HomeScreen(navController) }
@@ -105,52 +104,3 @@ fun MainFunction() {
     }
 }
 
-class FormViewModel : ViewModel() {
-    var firstName by mutableStateOf("")
-    var lastName by mutableStateOf("")
-    var age by mutableIntStateOf(-1)
-    var height by mutableStateOf("n/a")
-    var address by mutableStateOf("")
-    var phoneNumber by mutableStateOf("")
-
-    var occupation by mutableStateOf("")
-    var hobbies by mutableStateOf("")
-    var birthdate by mutableStateOf("")
-    var birthplace by mutableStateOf("")
-    var favFood by mutableStateOf("")
-    var favMovie by mutableStateOf("")
-    var mostLoved by mutableStateOf("")
-    var mostHated by mutableStateOf("")
-
-    //TODO check if mutableStateOfs are necessary. Change viewmodel on result.
-    var messageToOwner = "";
-
-    var isFirstNameValid by mutableStateOf(true)
-    var isLastNameValid by mutableStateOf(true)
-    var isAgeValid by mutableStateOf(true)
-    var isAddressValid by mutableStateOf(true)
-    var isPhoneNumberValid by mutableStateOf(true)
-    var isBirthdateValid by mutableStateOf(true)
-    private val PHONE_NUMBER_REGEX =
-        Regex("^[+]?[(]?[0-9]{3}[)]?[-\\s.]?[0-9]{3}[-\\s.]?[0-9]{4,6}$")
-    private val PHONE_NUMBER_REGEX_TESTING = Regex("^\\d{4}\$")
-
-    fun validateInputs(): Boolean {
-        isFirstNameValid = firstName.length >= 3 && firstName.isNotBlank()
-        isLastNameValid = firstName.length >= 3 && firstName.isNotBlank()
-        isAgeValid = age in 120 downTo 0 && age.toString().isNotBlank()
-        isAddressValid = address.isNotBlank()
-        isPhoneNumberValid =
-            PHONE_NUMBER_REGEX_TESTING.matches(phoneNumber) //TODO remove testing regex eventually
-        isBirthdateValid = birthdate.isNotBlank()
-        val returnCheck = listOf(
-            isFirstNameValid,
-            isLastNameValid,
-            isAgeValid,
-            isAddressValid,
-            isPhoneNumberValid,
-            isBirthdateValid
-        )
-        return returnCheck.all { it }
-    }
-}

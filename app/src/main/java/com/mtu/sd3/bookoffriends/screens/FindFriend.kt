@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -20,15 +22,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.mtu.sd3.bookoffriends.Screen
 import com.mtu.sd3.bookoffriends.utility.FriendCardList
-import com.mtu.sd3.bookoffriends.utility.SQLViewmodel
+import com.mtu.sd3.bookoffriends.utility.SQLViewModel
 
 
 @Composable
-fun FindFriend(navController: NavController, sqlViewModel: SQLViewmodel) {
+fun FindFriend(navController: NavController, sqlViewModel: SQLViewModel) {
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
     var birthYear by remember { mutableStateOf("") }
@@ -38,11 +42,10 @@ fun FindFriend(navController: NavController, sqlViewModel: SQLViewmodel) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
         Box(
             Modifier
-                .fillMaxWidth()
-                .height(200.dp),
+                .fillMaxWidth(),
             contentAlignment = Alignment.TopStart
 
         ) {
@@ -51,16 +54,43 @@ fun FindFriend(navController: NavController, sqlViewModel: SQLViewmodel) {
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row(Modifier.fillMaxWidth()) {
-                    Text("First name:")
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp, start = 8.dp)
+                ) {
+                    Text(
+                        "First name:",
+                        Modifier.width(100.dp),
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                     TextField(value = firstName, onValueChange = { firstName = it })
                 }
-                Row(Modifier.fillMaxWidth()) {
-                    Text("Last name:")
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp, start = 8.dp)
+                ) {
+                    Text(
+                        "Last name:",
+                        Modifier.width(100.dp),
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                     TextField(value = lastName, onValueChange = { lastName = it })
                 }
-                Row(Modifier.fillMaxWidth()) {
-                    Text("Year of birth:")
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp, start = 8.dp)
+                ) {
+                    Text(
+                        "Year of birth:",
+                        Modifier.width(100.dp),
+                        fontSize = 25.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                     TextField(value = birthYear, onValueChange = { birthYear = it })
                 }
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {

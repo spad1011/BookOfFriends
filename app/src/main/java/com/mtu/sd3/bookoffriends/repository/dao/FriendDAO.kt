@@ -9,11 +9,11 @@ import com.mtu.sd3.bookoffriends.entity.FriendLite
 @Dao
 interface FriendDAO {
     @Insert
-    suspend fun insert(friend: Friend)
+    suspend fun insert(friend: Friend): Long
 
     @Query(
         """
-        SELECT id, firstName, lastName, age, address, phoneNumber
+        SELECT id, firstName, lastName, birthdate, address, phoneNumber
         FROM friend_table
         WHERE(:firstName IS NULL OR firstName LIKE :firstName)
         AND (:lastName IS NULL OR lastName LIKE :lastName)
